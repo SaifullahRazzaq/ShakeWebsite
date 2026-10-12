@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const OUT='/private/tmp/claude-501/-Users-waleedjawaid-Desktop-Webistes-Shake/d8260254-206b-49e1-a5f8-ba2d7f0b3056/scratchpad/shots';
+const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const p=await b.newPage({viewport:{width:1280,height:800},reducedMotion:'reduce'});
+const errs=[];p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
+p.on('console',m=>{if(m.type()==='error')errs.push(m.text().slice(0,160));});
+await p.goto('http://localhost:3000',{waitUntil:'networkidle'});
+await p.waitForTimeout(3000);
+await p.screenshot({path:`${OUT}/reduced-hero.png`,timeout:300000,animations:'disabled'});
+console.log('reduced-motion errors:',errs.length?[...new Set(errs)].slice(0,4):'none');
+await b.close();

@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-sans: var(--font-manrope), "Manrope", system-ui, sans-serif;
+}
+
+/* ── The flavour world ────────────────────────────────────────────────
+   Every colour on the site derives from these five. FlavorProvider writes
+   them once per transition and GSAP interpolates them, so changing flavour
+   repaints the entire world — type, rules, buttons, atmosphere — as one move.
+   Never hard-code a flavour colour in a component.                      */
+:root {
+  --flavor: #ffb02e;
+  --flavor-2: #ff7a18;
+  --deep: #85380a;
+  --foam: #ffe3a8;
+  --sky: #ffc76b;
+
+  --ink: #1c1006;
+  --paper: #fff6e6;
+
+  --fg: var(--ink);
+  --fg-soft: color-mix(in srgb, var(--fg) 62%, transparent);
+  --fg-faint: color-mix(in srgb, var(--fg) 26%, transparent);
+  --rule: color-mix(in srgb, var(--fg) 14%, transparent);
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+::selection { background: var(--flavor); color: var(--ink); }
+
+/* ── Type ─────────────────────────────────────────────────────────────
+   Display type here is a wall, not a headline: very heavy, very tight,
+   set big enough that the liquid can pass in front of it.               */
+.display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 0.80;
+  letter-spacing: -0.045em;
+  font-size: clamp(3.4rem, 15vw, 15rem);
+  margin: 0;
+  text-transform: uppercase;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.038em;
+  font-size: clamp(2.4rem, 8vw, 7rem);
+  margin: 0;
+  text-transform: uppercase;
+}
+.display-sm {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.7rem, 4.2vw, 3.4rem);
+  margin: 0;
+  text-transform: uppercase;
+}
+.eyebrow {
+  font-size: clamp(0.58rem, 0.72vw, 0.7rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--fg-soft);
+  margin: 0;
+}
+.lede {
+  font-size: clamp(1rem, 1.35vw, 1.24rem);
+  line-height: 1.5;
+  color: var(--fg-soft);
+  max-width: 42ch;
+  margin: 0;
+}
+.micro {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--fg-faint);
+  margin: 0;
+}
+
+/* numerals that line up in menus and prices */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ── Layout ─────────────────────────────────────────────────────────── */
+.shell { width: 100%; padding-inline: clamp(1.1rem, 4vw, 4.5rem); }
+.scene { position: relative; width: 100%; }
+.fill { position: absolute; inset: 0; }
+.center-abs { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+
+/* Canvases never take pointer events; the scene surface below them does. */
+canvas { pointer-events: none; }
+
+/* ── Cursor ─────────────────────────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  body.has-cursor, body.has-cursor * { cursor: none; }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────
+   The identity survives: liquid still renders and still breathes, only
+   slower. Travel, parallax and camera moves stop.                        */
+@media (prefers-reduced-motion: reduce) {
+  .parallax { transform: none !important; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* A hard-stop for anything that must not scroll sideways */
+.no-x { overflow-x: clip; }
